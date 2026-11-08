@@ -1,0 +1,10 @@
+.gradle/
+.tools/
+**/build/
+local.properties
+app/libs/*.aar
+*.jks
+*.keystore
+*.p8
+*.jwt
+dist/

@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.application'
+}
+
+def developerTokenPath = providers.environmentVariable('MOTING_DEVELOPER_TOKEN_FILE').orElse('')
+def configuredAssets = layout.buildDirectory.dir('generated/motingAssets')
+def configureDeveloperToken = tasks.register('configureDeveloperToken') {
+    inputs.property('tokenFilePath', developerTokenPath)
+    if (!developerTokenPath.get().isEmpty()) {
+        inputs.file(file(developerTokenPath.get()))
+    }
+    outputs.dir(configuredAssets)
+    doLast {
+        def directory = configuredAssets.get().asFile
+        directory.mkdirs()
+        def output = new File(directory, 'developer-token.jwt')
+        if (output.exists() && !output.delete()) {
+            throw new GradleException('Cannot replace the generated developer-token configuration.')
+        }
+        if (!developerTokenPath.get().isEmpty()) {
+            def token = file(developerTokenPath.get()).getText('UTF-8').trim()
+            if (token.length() > 8192 || !(token ==~ /[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/)) {
+                throw new GradleException('Expected a signed developer JWT, never a private key.')
+            }
+            output.setText(token, 'UTF-8')
+        }
+    }
+}
+
+android {
+    namespace 'app.moting'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'io.github.ww4yne.blank'
+        minSdk 30
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        manifestPlaceholders = [appLabel: 'BLANK']
+    }
+    if (project.hasProperty('uiOnly')) {
+        defaultConfig {
+            applicationIdSuffix '.uitest'
+            manifestPlaceholders = [appLabel: 'BLANK UI 测试']
+        }
+        packaging.jniLibs.excludes += ['**/*.so']
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    buildFeatures {
+        buildConfig true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    sourceSets.main.assets.srcDir(configuredAssets)
+}
+
+tasks.named('preBuild').configure { dependsOn(configureDeveloperToken) }
+
+dependencies {
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+    implementation files('libs/mediaplayback-release-1.1.1.aar')
+    implementation files('libs/musickitauth-release-1.1.2.aar')
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20240303'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}

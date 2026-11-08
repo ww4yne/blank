@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The launcher inflates RemoteViews without AppCompat; tint must use the native attribute. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UseAppTint"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/widget_surface">
+
+    <LinearLayout
+        android:id="@+id/widget_header"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:text="BLANK"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:includeFontPadding="false"
+            android:gravity="center_vertical" />
+        <TextView
+            android:id="@+id/widget_state"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="未播放"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:includeFontPadding="false"
+            android:gravity="end|center_vertical" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/widget_artwork"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_album_placeholder"
+        android:contentDescription="封面，打开播放器" />
+    <FrameLayout
+        android:id="@+id/widget_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/widget_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="选择歌曲"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:includeFontPadding="false" />
+    <TextView
+        android:id="@+id/widget_artist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="打开 BLANK 开始聆听"
+        android:textSize="14sp"
+        android:textColor="#000000"
+        android:includeFontPadding="false" />
+    <TextView
+        android:id="@+id/widget_album"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="12sp"
+        android:textColor="#000000"
+        android:includeFontPadding="false" />
+
+    <ProgressBar
+        android:id="@+id/widget_progress"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="18dp"
+        android:indeterminate="false"
+        android:progressDrawable="@drawable/widget_progress"
+        android:progressTint="@null"
+        android:progressBackgroundTint="@null"
+        android:background="@null"
+        android:contentDescription="播放进度，随播放操作更新" />
+    <LinearLayout
+        android:id="@+id/widget_times"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/widget_elapsed"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="0:00"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:includeFontPadding="false"
+            android:gravity="center_vertical" />
+        <TextView
+            android:id="@+id/widget_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="0:00"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:includeFontPadding="false"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center">
+        <ImageButton
+            android:id="@+id/widget_previous"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_previous"
+            android:tint="#000000"
+            android:background="@drawable/widget_surface"
+            android:backgroundTint="@null"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"
+            android:contentDescription="上一首" />
+        <ImageButton
+            android:id="@+id/widget_play"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:padding="16dp"
+            android:src="@drawable/ic_play"
+            android:tint="#FFFFFF"
+            android:background="@drawable/widget_primary"
+            android:backgroundTint="@null"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"
+            android:contentDescription="播放" />
+        <ImageButton
+            android:id="@+id/widget_next"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_next"
+            android:tint="#000000"
+            android:background="@drawable/widget_surface"
+            android:backgroundTint="@null"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"
+            android:contentDescription="下一首" />
+    </LinearLayout>
+</LinearLayout>
